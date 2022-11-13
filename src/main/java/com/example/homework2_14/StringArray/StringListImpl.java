@@ -1,23 +1,22 @@
 package com.example.homework2_14.StringArray;
 
+import java.sql.Array;
 import java.util.Objects;
 
 public class StringListImpl implements StringList {
-    private static final int INITIAL_SIZE=15;
+    private static final int INITIAL_SIZE = 15;
     private final String[] stringArray;
     private int capacity;
 
     public StringListImpl() {
         stringArray = new String[INITIAL_SIZE];
-        capacity=0;
+        capacity = 0;
     }
 
 
     @Override
     public String add(String item) {
-
-
-        return null;
+        return add(capacity, item);
     }
 
     @Override
@@ -37,62 +36,110 @@ public class StringListImpl implements StringList {
 
     @Override
     public String set(int index, String item) {
-        return null;
+        checkNotNull(item);
+        checkNonNegativeIndex(index);
+        checkIndex(index, true);
+        return stringArray[index] = item;
     }
 
     @Override
     public String remove(String item) {
-        return null;
+        int removing = indexOf(item);
+        if (removing == -1) {
+            throw new IllegalArgumentException("элемент не найден");
+        }
+        checkNotNull(item);
+        return remove(removing);
+
     }
 
     @Override
     public String remove(int index) {
-        return null;
+        checkIndex(index, true);
+        checkNonNegativeIndex(index);
+        String removing = stringArray[index];
+        System.arraycopy(stringArray, index + 1, stringArray, index, capacity - 1 - index);
+        stringArray[--capacity] = null;
+        return removing;
     }
 
     @Override
     public boolean contains(String item) {
-        return false;
+        return indexOf(item) != -1;
     }
 
     @Override
     public int indexOf(String item) {
-        return 0;
+        checkNotNull(item);
+        int index = -1;
+        for (int i = 0; i < capacity; i++) {
+            if (stringArray[i].equals(item)) {
+                index = i;
+                break;
+            }
+        }
+        return index;
     }
 
     @Override
     public int lastIndexOf(String item) {
-        return 0;
+
+        checkNotNull(item);
+        int index = -1;
+        for (int i = capacity-1; i >=0; i--) {
+            if (stringArray[i].equals(item)) {
+                index = i;
+                break;
+            }
+        }
+        return index;
     }
 
     @Override
     public String get(int index) {
-        return null;
+        checkNonNegativeIndex(index);
+        checkIndex(index,true);
+        return stringArray[index];
     }
 
     @Override
     public boolean equals(StringList otherList) {
-        return false;
+        if (size() != otherList.size()) {
+            return false;
+        }
+        for (int i = 0; i < capacity; i++) {
+            if (!stringArray[i].equals(get(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
     public int size() {
-        return 0;
+        return capacity;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size() == 0;
     }
 
     @Override
     public void clear() {
+        for (int i = 0; i < capacity; i++) {
+            stringArray[i] = null;
+
+        }
+        capacity = 0;
 
     }
 
     @Override
     public String[] toArray() {
-        return new String[0];
+        String[] resultArray = new String[capacity];
+        System.arraycopy(stringArray, 0, stringArray, 0, capacity);
+        return resultArray;
     }
 
     private void checkNotNull(String string) {
@@ -108,9 +155,9 @@ public class StringListImpl implements StringList {
     }
 
     private void checkIndex(int index, boolean includeEquality) {
-        boolean expression=includeEquality?index>=capacity:index>capacity;
+        boolean expression = includeEquality ? index >= capacity : index > capacity;
         if (expression) {
-            throw new IllegalArgumentException("индекс: "+index+"размер: "+capacity);
+            throw new IllegalArgumentException("индекс: " + index + "размер: " + capacity);
         }
 
     }
