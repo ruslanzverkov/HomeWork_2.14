@@ -83,6 +83,8 @@ public class StringListImplTest {
         stringList2.clear();
         assertThat(stringList.equals(stringList2)).isFalse();
 
+
+
     }
 
 
