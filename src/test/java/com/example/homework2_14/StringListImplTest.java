@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
 public class StringListImplTest {
+    public static final String TEST = "16";
     private final StringList stringList = new StringListImpl();
 
     @AfterEach
@@ -40,6 +41,7 @@ public class StringListImplTest {
             assertThat(stringList.lastIndexOf(elements[i])).isEqualTo(i);
 
         }
+
 
     }
 
@@ -74,7 +76,7 @@ public class StringListImplTest {
     @Test
     void equalsTest() {
         String[] elements = new String[]{"t1", "t2", "t3", "t4"};
-        StringList stringList2=new StringListImpl();
+        StringList stringList2 = new StringListImpl();
 
         for (String element : elements) {
             stringList2.add(element);
@@ -82,7 +84,6 @@ public class StringListImplTest {
         assertThat(stringList.equals(stringList2)).isTrue();
         stringList2.clear();
         assertThat(stringList.equals(stringList2)).isFalse();
-
 
 
     }
